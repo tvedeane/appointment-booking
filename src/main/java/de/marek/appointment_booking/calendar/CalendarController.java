@@ -1,4 +1,4 @@
-package de.marek.appointment_booking;
+package de.marek.appointment_booking.calendar;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

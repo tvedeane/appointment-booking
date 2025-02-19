@@ -1,4 +1,4 @@
-package de.marek.appointment_booking;
+package de.marek.appointment_booking.calendar;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
