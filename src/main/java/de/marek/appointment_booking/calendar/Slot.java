@@ -13,4 +13,33 @@ public final class Slot {
     private Long id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Boolean booked;
+    private Long salesManagerId;
+
+    public Slot(Long id, LocalDateTime startDate, LocalDateTime endDate, Boolean booked, Long salesManagerId) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.booked = booked;
+        this.salesManagerId = salesManagerId;
+    }
+
+    public Slot() {
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Boolean getBooked() {
+        return booked;
+    }
+
+    public Long getSalesManagerId() {
+        return salesManagerId;
+    }
 }

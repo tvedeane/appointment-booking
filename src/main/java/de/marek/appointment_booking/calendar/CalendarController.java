@@ -1,25 +1,23 @@
 package de.marek.appointment_booking.calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/calendar")
 public class CalendarController {
+    @Autowired
+    private CalendarService calendarService;
+
     @PostMapping("/query")
-    public String queryCalendar() {
-        return """
-            [
-            {
-            "available_count": 1,
-            "start_date": "2024-05-03T10:30:00.00Z"
-            },
-            {
-            "available_count": 2,
-            "start_date": "2024-05-03T12:00:00.00Z"
-            }
-            ]
-            """;
+    public ResponseEntity<List<AvailableSlotsResponse>> queryCalendar(@RequestBody AvailableSlotsRequest request) {
+        return ResponseEntity.ok(calendarService.findAvailableSlots(request.date()));
     }
 }
