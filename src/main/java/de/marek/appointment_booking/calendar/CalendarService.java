@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +35,9 @@ public class CalendarService {
             .collect(Collectors.groupingBy(Slot::getStartDate, Collectors.counting()));
 
         return availableSlotsPerTime.entrySet().stream()
-            .map(s -> new AvailableSlotsResponse(s.getValue(), toUTC(s.getKey()))).toList();
+            .map(s -> new AvailableSlotsResponse(s.getValue(), toUTC(s.getKey())))
+            .sorted(Comparator.comparing(AvailableSlotsResponse::startDate))
+            .toList();
     }
 
     private List<Slot> countAvailableSlots(List<Slot> slots) {
