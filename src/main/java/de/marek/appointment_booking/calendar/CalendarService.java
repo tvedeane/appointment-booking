@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -32,8 +34,7 @@ public class CalendarService {
             .collect(Collectors.groupingBy(Slot::getStartDate, Collectors.counting()));
 
         return availableSlotsPerTime.entrySet().stream()
-            .map(s -> new AvailableSlotsResponse(s.getValue(), s.getKey()))
-            .toList();
+            .map(s -> new AvailableSlotsResponse(s.getValue(), toUTC(s.getKey()))).toList();
     }
 
     private List<Slot> countAvailableSlots(List<Slot> slots) {
@@ -55,5 +56,9 @@ public class CalendarService {
             .noneMatch(bookedStart ->
                 !startTime.isBefore(bookedStart) &&
                 startTime.isBefore(bookedStart.plusHours(1)));
+    }
+
+    private LocalDateTime toUTC(LocalDateTime time) {
+        return time.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
     }
 }
