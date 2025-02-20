@@ -52,10 +52,17 @@ public class CalendarService {
     }
 
     private boolean isAvailable(LocalDateTime startTime, Set<LocalDateTime> bookedStartTimes) {
+        var endTime = startTime.plusHours(1);
         return bookedStartTimes.stream()
-            .noneMatch(bookedStart ->
-                !startTime.isBefore(bookedStart) &&
-                startTime.isBefore(bookedStart.plusHours(1)));
+            .noneMatch(bookedStart -> {
+                LocalDateTime bookedEnd = bookedStart.plusHours(1);
+
+                // Check if  start time falls within booked slot's hour, OR
+                // end time falls within booked slot's hour (exclusive)
+                return (startTime.isAfter(bookedStart) && startTime.isBefore(bookedEnd)) ||
+                       (endTime.isAfter(bookedStart) && endTime.isBefore(bookedEnd)) ||
+                       startTime.equals(bookedStart);
+            });
     }
 
     private LocalDateTime toUTC(LocalDateTime time) {

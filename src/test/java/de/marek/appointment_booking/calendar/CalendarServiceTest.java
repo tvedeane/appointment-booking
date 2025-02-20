@@ -22,7 +22,7 @@ class CalendarServiceTest {
         var products = new String[]{"Heatpumps"};
         when(mockCalendarRepository.findByDate(day, products, "", "")).thenReturn(
             List.of(
-                new Slot(1L, LocalDateTime.of(2025, 1, 5, 10, 0), LocalDateTime.of(2025, 1, 5, 11, 0), true, salesManager),
+                new Slot(1L, LocalDateTime.of(2025, 1, 5, 11, 0), LocalDateTime.of(2025, 1, 5, 12, 0), true, salesManager),
                 new Slot(1L, LocalDateTime.of(2025, 1, 5, 10, 30), LocalDateTime.of(2025, 1, 5, 11, 30), false, salesManager)
             )
         );
