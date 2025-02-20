@@ -1,8 +1,6 @@
 package de.marek.appointment_booking.calendar;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -14,14 +12,15 @@ public final class Slot {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean booked;
-    private Long salesManagerId;
+    @ManyToOne
+    private SalesManager salesManager;
 
-    public Slot(Long id, LocalDateTime startDate, LocalDateTime endDate, Boolean booked, Long salesManagerId) {
+    public Slot(Long id, LocalDateTime startDate, LocalDateTime endDate, Boolean booked, SalesManager salesManager) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.booked = booked;
-        this.salesManagerId = salesManagerId;
+        this.salesManager = salesManager;
     }
 
     public Slot() {
@@ -39,7 +38,7 @@ public final class Slot {
         return booked;
     }
 
-    public Long getSalesManagerId() {
-        return salesManagerId;
+    public SalesManager getSalesManager() {
+        return salesManager;
     }
 }

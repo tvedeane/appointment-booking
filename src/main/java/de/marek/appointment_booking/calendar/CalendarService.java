@@ -17,9 +17,9 @@ public class CalendarService {
         this.calendarRepository = calendarRepository;
     }
 
-    public List<AvailableSlotsResponse> findAvailableSlots(LocalDate day) {
-        var allSlots = calendarRepository.findByDate(day);
-        var slotsPerManager = allSlots.stream().collect(Collectors.groupingBy(Slot::getSalesManagerId));
+    public List<AvailableSlotsResponse> findAvailableSlots(LocalDate day, String[] products) {
+        var allSlots = calendarRepository.findByDate(day, products);
+        var slotsPerManager = allSlots.stream().collect(Collectors.groupingBy(s -> s.getSalesManager().getId()));
 
         var availableSlotsPerTime = slotsPerManager.values().stream()
             .map(this::countAvailableSlots)

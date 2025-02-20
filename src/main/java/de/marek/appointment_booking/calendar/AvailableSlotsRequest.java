@@ -8,7 +8,7 @@ import java.util.List;
 
 public record AvailableSlotsRequest(
     LocalDate date,
-    List<String> products,
+    String[] products,
     String language,
     String rating) {
 }

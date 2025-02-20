@@ -10,7 +10,11 @@ import java.util.List;
 
 @Repository
 public interface CalendarRepository extends JpaRepository<Slot, Long> {
-   @Query("SELECT s FROM Slot s WHERE DATE(s.startDate) = :date AND DATE(s.endDate) = :date")
-   // TODO add manager-specific data into the query
-   List<Slot> findByDate(@Param("date") LocalDate date);
+   @Query(value = """
+       SELECT s.* FROM slots s
+       JOIN sales_managers sm ON s.sales_manager_id = sm.id
+       WHERE DATE(s.start_date) = :date AND DATE(s.end_date) = :date
+       AND sm.products @> CAST(:products AS varchar[])
+       """, nativeQuery = true)
+   List<Slot> findByDate(@Param("date") LocalDate date, @Param("products") String[] products);
 }

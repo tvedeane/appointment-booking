@@ -18,6 +18,6 @@ public class CalendarController {
 
     @PostMapping("/query")
     public ResponseEntity<List<AvailableSlotsResponse>> queryCalendar(@RequestBody AvailableSlotsRequest request) {
-        return ResponseEntity.ok(calendarService.findAvailableSlots(request.date()));
+        return ResponseEntity.ok(calendarService.findAvailableSlots(request.date(), request.products()));
     }
 }
