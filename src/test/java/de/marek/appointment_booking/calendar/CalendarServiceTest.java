@@ -1,10 +1,12 @@
 package de.marek.appointment_booking.calendar;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -13,7 +15,12 @@ import static org.mockito.Mockito.when;
 class CalendarServiceTest {
     private final CalendarRepository mockCalendarRepository = mock();
 
-    CalendarService underTest = new CalendarService(mockCalendarRepository);
+    private final CalendarService underTest = new CalendarService(mockCalendarRepository);
+
+    @BeforeAll
+    static void beforeAll() {
+        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
+    }
 
     @Test
     void noAvailableSlotsIfStartInBookedTime() {
