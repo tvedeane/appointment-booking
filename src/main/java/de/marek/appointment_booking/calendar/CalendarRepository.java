@@ -15,6 +15,11 @@ public interface CalendarRepository extends JpaRepository<Slot, Long> {
        JOIN sales_managers sm ON s.sales_manager_id = sm.id
        WHERE DATE(s.start_date) = :date AND DATE(s.end_date) = :date
        AND sm.products @> CAST(:products AS varchar[])
+       AND :language=ANY(sm.languages)
+       AND :rating=ANY(sm.customer_ratings)
        """, nativeQuery = true)
-   List<Slot> findByDate(@Param("date") LocalDate date, @Param("products") String[] products);
+   List<Slot> findByDate(@Param("date") LocalDate date,
+                         @Param("products") String[] products,
+                         @Param("language") String language,
+                         @Param("rating") String rating);
 }

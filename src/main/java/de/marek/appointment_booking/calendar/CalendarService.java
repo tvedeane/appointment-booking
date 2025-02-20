@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,8 +19,11 @@ public class CalendarService {
         this.calendarRepository = calendarRepository;
     }
 
-    public List<AvailableSlotsResponse> findAvailableSlots(LocalDate day, String[] products) {
-        var allSlots = calendarRepository.findByDate(day, products);
+    public List<AvailableSlotsResponse> findAvailableSlots(LocalDate day,
+                                                           String[] products,
+                                                           String language,
+                                                           String rating) {
+        var allSlots = calendarRepository.findByDate(day, products, language, rating);
         var slotsPerManager = allSlots.stream().collect(Collectors.groupingBy(s -> s.getSalesManager().getId()));
 
         var availableSlotsPerTime = slotsPerManager.values().stream()

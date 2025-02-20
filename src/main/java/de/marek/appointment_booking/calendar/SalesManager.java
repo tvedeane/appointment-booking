@@ -14,6 +14,10 @@ public final class SalesManager {
     private Long id;
     @Column(name = "products", columnDefinition = "text[]")
     private List<String> products;
+    @Column(name = "languages", columnDefinition = "text[]")
+    private List<String> languages;
+    @Column(name = "customer_ratings", columnDefinition = "text[]")
+    private List<String> ratings;
 
     public SalesManager(Long id) {
         this.id = id;
