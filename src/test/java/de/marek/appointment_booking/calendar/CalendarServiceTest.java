@@ -27,7 +27,7 @@ class CalendarServiceTest {
             )
         );
 
-        var result = underTest.findAvailableSlots(day, products, "", "");
+        var result = underTest.countAvailableSlots(day, products, "", "");
         assertThat(result).isEmpty();
     }
 
@@ -43,7 +43,7 @@ class CalendarServiceTest {
             )
         );
 
-        var result = underTest.findAvailableSlots(day, products, "", "");
+        var result = underTest.countAvailableSlots(day, products, "", "");
         assertThat(result).containsExactly(
             new AvailableSlotsResponse(1L, LocalDateTime.of(2025, 1, 5, 10, 0))
         );
@@ -62,7 +62,7 @@ class CalendarServiceTest {
             )
         );
 
-        var result = underTest.findAvailableSlots(day, products, "", "");
+        var result = underTest.countAvailableSlots(day, products, "", "");
 
         assertThat(result).containsExactly(
             new AvailableSlotsResponse(2L, LocalDateTime.of(2025, 1, 5, 9, 0))

@@ -26,7 +26,7 @@ public class CalendarControllerTest {
 
     @Test
     void queryCalendar() throws Exception {
-        when(calendarService.findAvailableSlots(any(), any(), any(), any()))
+        when(calendarService.countAvailableSlots(any(), any(), any(), any()))
             .thenReturn(List.of(new AvailableSlotsResponse(1L, LocalDateTime.now())));
         var content = "{\"date\": \"2024-05-04\", \"products\": [], \"language\": \"\", \"rating\": \"\"}";
         mockMvc.perform(MockMvcRequestBuilders.post("/calendar/query")

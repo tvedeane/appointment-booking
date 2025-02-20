@@ -22,15 +22,19 @@ public class CalendarService {
         this.calendarRepository = calendarRepository;
     }
 
-    public List<AvailableSlotsResponse> findAvailableSlots(LocalDate day,
-                                                           String[] products,
-                                                           String language,
-                                                           String rating) {
+    /**
+     * Counts the available slots for a given day, filtered by manager's products, language, and rating
+     * aggregating the available slots by their start time.
+     */
+    public List<AvailableSlotsResponse> countAvailableSlots(LocalDate day,
+                                                            String[] products,
+                                                            String language,
+                                                            String rating) {
         var allSlots = calendarRepository.findByDate(day, products, language, rating);
         var slotsPerManager = allSlots.stream().collect(Collectors.groupingBy(s -> s.getSalesManager().getId()));
 
         var availableSlotsPerTime = slotsPerManager.values().stream()
-            .map(this::countAvailableSlots)
+            .map(this::getAvailableSlots)
             .flatMap(List::stream)
             .collect(Collectors.groupingBy(Slot::getStartDate, Collectors.counting()));
 
@@ -40,7 +44,8 @@ public class CalendarService {
             .toList();
     }
 
-    private List<Slot> countAvailableSlots(List<Slot> slots) {
+    /** Returns available slots, i.e. slots that don't overlap with any of the booked slots. */
+    private List<Slot> getAvailableSlots(List<Slot> slots) {
         var grouped = slots.stream().collect(Collectors.groupingBy(Slot::getBooked));
         var bookedSlots = grouped.getOrDefault(true, Collections.emptyList());
         var availableSlots = grouped.getOrDefault(false, Collections.emptyList());
