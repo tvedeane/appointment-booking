@@ -16,7 +16,23 @@ class CalendarServiceTest {
     CalendarService underTest = new CalendarService(mockCalendarRepository);
 
     @Test
-    void noAvailableSlotsIfOverlap() {
+    void noAvailableSlotsIfStartInBookedTime() {
+        var day = LocalDate.of(2025, 1, 5);
+        var salesManager = new SalesManager(1L);
+        var products = new String[]{"Heatpumps"};
+        when(mockCalendarRepository.findByDate(day, products, "", "")).thenReturn(
+            List.of(
+                new Slot(1L, LocalDateTime.of(2025, 1, 5, 10, 0), LocalDateTime.of(2025, 1, 5, 11, 0), true, salesManager),
+                new Slot(1L, LocalDateTime.of(2025, 1, 5, 10, 30), LocalDateTime.of(2025, 1, 5, 11, 30), false, salesManager)
+            )
+        );
+
+        var result = underTest.countAvailableSlots(day, products, "", "");
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void noAvailableSlotsIfEndInBookedTime() {
         var day = LocalDate.of(2025, 1, 5);
         var salesManager = new SalesManager(1L);
         var products = new String[]{"Heatpumps"};
@@ -66,6 +82,25 @@ class CalendarServiceTest {
 
         assertThat(result).containsExactly(
             new AvailableSlotsResponse(2L, LocalDateTime.of(2025, 1, 5, 9, 0))
+        );
+    }
+
+    @Test
+    void multipleSlotsAreSorted() {
+        var day = LocalDate.of(2025, 1, 5);
+        var salesManager = new SalesManager(1L);
+        var products = new String[]{"Heatpumps"};
+        when(mockCalendarRepository.findByDate(day, products, "", "")).thenReturn(
+            List.of(
+                new Slot(1L, LocalDateTime.of(2025, 1, 5, 10, 30), LocalDateTime.of(2025, 1, 5, 11, 30), false, salesManager),
+                new Slot(1L, LocalDateTime.of(2025, 1, 5, 11, 0), LocalDateTime.of(2025, 1, 5, 12, 0), false, salesManager)
+            )
+        );
+
+        var result = underTest.countAvailableSlots(day, products, "", "");
+        assertThat(result).containsExactly(
+            new AvailableSlotsResponse(1L, LocalDateTime.of(2025, 1, 5, 9, 30)),
+            new AvailableSlotsResponse(1L, LocalDateTime.of(2025, 1, 5, 10, 0))
         );
     }
 }
