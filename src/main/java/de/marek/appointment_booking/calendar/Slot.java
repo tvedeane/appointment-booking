@@ -30,10 +30,6 @@ public final class Slot {
         return startDate;
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
     public Boolean getBooked() {
         return booked;
     }
